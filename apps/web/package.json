@@ -1,0 +1,21 @@
+{
+  "name": "bazar-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write --no-error-on-unmatched-pattern \"app/**/*.{ts,vue}\" \"*.{ts,js,mjs,json}\"",
+    "format:check": "prettier --check --no-error-on-unmatched-pattern \"app/**/*.{ts,vue}\" \"*.{ts,js,mjs,json}\"",
+    "lint": "eslint --no-error-on-unmatched-pattern \"app/**/*.{ts,vue}\" \"*.{ts,js,mjs}\"",
+    "lint:fix": "eslint --fix --no-error-on-unmatched-pattern \"app/**/*.{ts,vue}\" \"*.{ts,js,mjs}\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.9.1",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.3",
+    "typescript-eslint": "^8.59.3",
+    "vue-eslint-parser": "^10.4.0"
+  }
+}

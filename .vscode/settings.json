@@ -1,0 +1,51 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "eslint.useFlatConfig": true,
+  "eslint.packageManager": "npm",
+  "eslint.run": "onType",
+  "eslint.quiet": false,
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "eslint.workingDirectories": [
+    {
+      "directory": "apps/api",
+      "changeProcessCWD": true
+    },
+    {
+      "directory": "apps/web",
+      "changeProcessCWD": true
+    }
+  ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "typescript.validate.enable": true,
+  "javascript.validate.enable": true,
+  "editor.renderValidationDecorations": "on",
+  "problems.decorations.enabled": true
+}
