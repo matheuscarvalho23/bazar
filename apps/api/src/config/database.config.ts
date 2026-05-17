@@ -1,16 +1,16 @@
 import { registerAs } from '@nestjs/config'
-import { validateEnvironment } from './environment.validation'
+import { validateDatabaseEnvironment } from './environment.validation'
 import type { IDatabaseConfig } from './interfaces/database-config.interface'
-import type { IEnvironmentVariables } from './interfaces/environment-variables.interface'
+import type { IDatabaseEnvironmentVariables } from './interfaces/database-environment-variables.interface'
 
 /**
  * Create the database configuration from validated environment variables.
  *
- * @param environment - Validated environment variables : IEnvironmentVariables
+ * @param environment - Validated database environment variables : IDatabaseEnvironmentVariables
  *
  * @returns Database configuration : IDatabaseConfig
  */
-export function createDatabaseConfig(environment: IEnvironmentVariables): IDatabaseConfig {
+export function createDatabaseConfig(environment: IDatabaseEnvironmentVariables): IDatabaseConfig {
   return {
     url: environment.DATABASE_URL,
     ssl: resolveDatabaseSsl(environment),
@@ -21,11 +21,11 @@ export function createDatabaseConfig(environment: IEnvironmentVariables): IDatab
 /**
  * Resolve whether PostgreSQL SSL should be enabled.
  *
- * @param environment - Validated environment variables : IEnvironmentVariables
+ * @param environment - Validated database environment variables : IDatabaseEnvironmentVariables
  *
  * @returns Whether SSL is enabled : boolean
  */
-function resolveDatabaseSsl(environment: IEnvironmentVariables): boolean {
+function resolveDatabaseSsl(environment: IDatabaseEnvironmentVariables): boolean {
   if (environment.DATABASE_SSL === 'true') {
     return true
   }
@@ -38,7 +38,7 @@ function resolveDatabaseSsl(environment: IEnvironmentVariables): boolean {
 }
 
 export default registerAs('database', (): IDatabaseConfig => {
-  const environment = validateEnvironment(process.env)
+  const environment = validateDatabaseEnvironment(process.env)
 
   return createDatabaseConfig(environment)
 })

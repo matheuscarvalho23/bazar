@@ -1,16 +1,18 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import authConfig from './config/auth.config'
 import databaseConfig from './config/database.config'
 import { validateEnvironment } from './config/environment.validation'
 import { createNestTypeOrmOptions } from './database/typeorm-options.factory'
+import { AdminsModule } from './modules/admins/admins.module'
 import type { IDatabaseConfig } from './config/interfaces/database-config.interface'
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig],
+      load: [databaseConfig, authConfig],
       validate: validateEnvironment,
     }),
     TypeOrmModule.forRootAsync({
@@ -21,6 +23,7 @@ import type { IDatabaseConfig } from './config/interfaces/database-config.interf
         return createNestTypeOrmOptions(config)
       },
     }),
+    AdminsModule,
   ],
 })
 export class AppModule {}

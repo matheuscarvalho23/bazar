@@ -1,0 +1,71 @@
+import { Inject, Injectable } from '@nestjs/common'
+import { AdminsMapper } from './admins.mapper'
+import { AdminsRepository } from './admins.repository'
+import type { AdminEntity } from './entities/admin.entity'
+import type { IAdminResponse } from './interfaces/admin-response.interface'
+
+@Injectable()
+export class AdminsService {
+  constructor(
+    @Inject(AdminsRepository)
+    private readonly adminsRepository: AdminsRepository,
+    @Inject(AdminsMapper)
+    private readonly adminsMapper: AdminsMapper,
+  ) {}
+
+  /**
+   * Find one admin response by identifier.
+   *
+   * @param id - Admin identifier : string
+   *
+   * @returns Safe admin response or null : Promise<IAdminResponse | null>
+   */
+  async findAdminById(id: string): Promise<IAdminResponse | null> {
+    const admin = await this.adminsRepository.findById(id)
+
+    if (!admin) {
+      return null
+    }
+
+    return this.adminsMapper.toResponse(admin)
+  }
+
+  /**
+   * Find one admin response by normalized email.
+   *
+   * @param email - Normalized admin email : string
+   *
+   * @returns Safe admin response or null : Promise<IAdminResponse | null>
+   */
+  async findAdminByEmail(email: string): Promise<IAdminResponse | null> {
+    const admin = await this.adminsRepository.findByEmail(email)
+
+    if (!admin) {
+      return null
+    }
+
+    return this.adminsMapper.toResponse(admin)
+  }
+
+  /**
+   * Count all persisted admins.
+   *
+   * @returns Admin count : Promise<number>
+   */
+  async countAdmins(): Promise<number> {
+    return this.adminsRepository.countAdmins()
+  }
+
+  /**
+   * Save an admin and return a safe response.
+   *
+   * @param admin - Admin entity : AdminEntity
+   *
+   * @returns Safe admin response : Promise<IAdminResponse>
+   */
+  async saveAdmin(admin: AdminEntity): Promise<IAdminResponse> {
+    const savedAdmin = await this.adminsRepository.save(admin)
+
+    return this.adminsMapper.toResponse(savedAdmin)
+  }
+}
