@@ -1,10 +1,13 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common'
+import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { hash } from 'bcrypt'
+import { JwtService } from '@nestjs/jwt'
+import { compare, hash } from 'bcrypt'
 import { AdminsService } from '../admins/admins.service'
 import type { IAuthConfig } from '../../config/interfaces/auth-config.interface'
 import type { IAdminResponse } from '../admins/interfaces/admin-response.interface'
+import type { LoginAdminDto } from './dto/login-admin.dto'
 import type { RegisterAdminDto } from './dto/register-admin.dto'
+import type { ILoginAdminResponse } from './interfaces/login-admin-response.interface'
 
 @Injectable()
 export class AuthService {
@@ -13,6 +16,8 @@ export class AuthService {
     private readonly adminsService: AdminsService,
     @Inject(ConfigService)
     private readonly configService: ConfigService,
+    @Inject(JwtService)
+    private readonly jwtService: JwtService,
   ) {}
 
   /**
@@ -45,6 +50,42 @@ export class AuthService {
       password: passwordHash,
       phone: dto.phone ?? null,
     })
+  }
+
+  /**
+   * Authenticate an existing admin account.
+   *
+   * @param dto - Admin login payload : LoginAdminDto
+   *
+   * @returns Access token and safe admin response : Promise<ILoginAdminResponse>
+   */
+  async loginAdmin(dto: LoginAdminDto): Promise<ILoginAdminResponse> {
+    const email = this.normalizeEmail(dto.email)
+    const admin = await this.adminsService.findAdminAuthenticationByEmail(email)
+
+    if (admin === null) {
+      throw new UnauthorizedException('Invalid email or password')
+    }
+
+    const isPasswordValid = await compare(dto.password, admin.passwordHash)
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid email or password')
+    }
+
+    const accessToken = await this.jwtService.signAsync({ sub: admin.id })
+
+    return {
+      accessToken,
+      admin: {
+        id: admin.id,
+        name: admin.name,
+        email: admin.email,
+        phone: admin.phone,
+        createdAt: admin.createdAt,
+        updatedAt: admin.updatedAt,
+      },
+    }
   }
 
   /**
