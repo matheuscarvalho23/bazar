@@ -16,6 +16,7 @@ export function createNestTypeOrmOptions(databaseConfig: IDatabaseConfig): TypeO
     url: databaseConfig.url,
     ssl: createSslOption(databaseConfig),
     synchronize: databaseConfig.synchronize,
+    entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
     autoLoadEntities: true,
     migrations: [`${__dirname}/migrations/*{.ts,.js}`],
   }

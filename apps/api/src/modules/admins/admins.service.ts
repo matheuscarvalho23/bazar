@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { AdminsMapper } from './admins.mapper'
 import { AdminsRepository } from './admins.repository'
-import type { AdminEntity } from './entities/admin.entity'
+import { AdminEntity } from './entities/admin.entity'
 import type { IAdminResponse } from './interfaces/admin-response.interface'
+import type { ICreateAdminInput } from './interfaces/create-admin-input.interface'
 
 @Injectable()
 export class AdminsService {
@@ -54,6 +55,24 @@ export class AdminsService {
    */
   async countAdmins(): Promise<number> {
     return this.adminsRepository.countAdmins()
+  }
+
+  /**
+   * Create an admin from already validated and normalized data.
+   *
+   * @param input - Admin creation input : ICreateAdminInput
+   *
+   * @returns Safe admin response : Promise<IAdminResponse>
+   */
+  async createAdmin(input: ICreateAdminInput): Promise<IAdminResponse> {
+    const admin = new AdminEntity()
+
+    admin.name = input.name
+    admin.email = input.email
+    admin.password = input.password
+    admin.phone = input.phone
+
+    return this.saveAdmin(admin)
   }
 
   /**
