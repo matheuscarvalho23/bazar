@@ -63,7 +63,7 @@ export class AuthService {
     const email = this.normalizeEmail(dto.email)
     const admin = await this.adminsService.findAdminAuthenticationByEmail(email)
 
-    if (admin === null) {
+    if (!admin) {
       throw new UnauthorizedException('Invalid email or password')
     }
 
