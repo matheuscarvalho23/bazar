@@ -89,6 +89,23 @@ export class AuthService {
   }
 
   /**
+   * Get the authenticated admin profile.
+   *
+   * @param adminId - Authenticated admin identifier : string
+   *
+   * @returns Safe admin response : Promise<IAdminResponse>
+   */
+  async getCurrentAdminProfile(adminId: string): Promise<IAdminResponse> {
+    const admin = await this.adminsService.findAdminById(adminId)
+
+    if (!admin) {
+      throw new UnauthorizedException('Authenticated admin not found')
+    }
+
+    return admin
+  }
+
+  /**
    * Normalize an email address before lookup or persistence.
    *
    * @param email - Raw email address : string

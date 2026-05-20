@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { AdminsModule } from '../admins/admins.module'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
+import { AdminJwtGuard } from './guards/admin-jwt.guard'
 import type { IAuthConfig } from '../../config/interfaces/auth-config.interface'
 import type { JwtModuleOptions } from '@nestjs/jwt'
 
@@ -25,6 +26,7 @@ import type { JwtModuleOptions } from '@nestjs/jwt'
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, AdminJwtGuard],
+  exports: [AdminJwtGuard],
 })
 export class AuthModule {}
