@@ -4,7 +4,7 @@
 
 This document defines how AI agents and developers must write frontend code in this repository. It is intentionally generic and should not depend on a specific product domain, provider, dashboard, authentication vendor, or backend framework implementation.
 
-Use this guide for Nuxt/Vue frontend work that communicates with a Node-based API through Axios, uses Pinia for shared state, and keeps API access isolated in service files.
+Use this guide for Nuxt/Vue frontend work that communicates with a Node-based API through Axios, uses Nuxt UI as the mandatory UI system, uses Pinia for shared state, and keeps API access isolated in service files.
 
 Cross-reference the main project guide in `docs/agents/AGENTS.md` before starting a task.
 
@@ -15,7 +15,7 @@ For TypeScript contracts, interfaces, type aliases, props, emits, and composable
 | Layer | Technology |
 | --- | --- |
 | Framework | Nuxt 4 |
-| UI | Vue 3 Composition API with `<script setup>` |
+| UI | Nuxt UI with Vue 3 Composition API and `<script setup>` |
 | Language | TypeScript strict mode |
 | State management | Pinia |
 | HTTP client | Axios |
@@ -67,8 +67,29 @@ Before writing frontend code:
 - Keep each change scoped to the requested task.
 - Do not install packages unless explicitly requested.
 - Do not introduce a new state, validation, UI, or HTTP library if an existing pattern is already present.
+- Use Nuxt UI for frontend screens and interactive UI. This rule is mandatory.
 - Prefer shared contracts from `packages/shared` or the existing project type location.
 - Keep frontend code independent from backend implementation details beyond API contracts.
+
+## Nuxt UI Rules
+
+Nuxt UI is the required UI system for this frontend.
+
+Rules:
+
+- Use Nuxt UI components for pages, forms, buttons, inputs, links, navigation,
+  feedback, overlays, and layout primitives whenever a suitable component
+  exists.
+- Do not create custom base UI components that duplicate a Nuxt UI component.
+- Custom components should compose feature-specific UI around Nuxt UI, not
+  replace the design system.
+- Keep styling small and local to layout or feature needs that Nuxt UI does not
+  already cover.
+- If Nuxt UI is not installed or configured in `apps/web`, the frontend task
+  must include the minimal Nuxt UI setup before implementing screens.
+- Do not introduce another UI library unless a later architecture decision
+  explicitly replaces Nuxt UI.
+- Do not add i18n unless a task explicitly requires it.
 
 ## Nuxt Auto-Import Rules
 
