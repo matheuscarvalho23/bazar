@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { ILoginAdminRequest } from '~/interfaces/auth/login-admin-request.interface'
 
+definePageMeta({
+  middleware: ['admin-guest'],
+})
+
 useHead({
   title: 'Admin login',
 })

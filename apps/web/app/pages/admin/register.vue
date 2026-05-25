@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { IRegisterAdminRequest } from '~/interfaces/auth/register-admin-request.interface'
 
+definePageMeta({
+  middleware: ['admin-guest'],
+})
+
 useHead({
   title: 'Admin registration',
 })

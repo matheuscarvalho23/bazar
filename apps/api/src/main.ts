@@ -29,6 +29,7 @@ function getCorsOrigins(): string[] {
  */
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule)
+  const port = process.env.PORT ?? '3001'
 
   app.enableCors({
     origin: getCorsOrigins(),
@@ -41,7 +42,7 @@ async function bootstrap(): Promise<void> {
     }),
   )
 
-  await app.listen(3001)
+  await app.listen(port)
 }
 
 void bootstrap()
