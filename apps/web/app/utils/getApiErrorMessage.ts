@@ -45,6 +45,10 @@ export function getApiErrorMessage(
   fallbackMessage = DEFAULT_API_ERROR_MESSAGE,
 ): string {
   if (axios.isAxiosError<IApiErrorResponse>(error)) {
+    if (error.response?.status === 401) {
+      return fallbackMessage
+    }
+
     return getMessageFromApiErrorResponse(error.response?.data) ?? fallbackMessage
   }
 

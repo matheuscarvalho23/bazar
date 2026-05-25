@@ -11,15 +11,18 @@ export default defineAppConfig({
     },
     button: {
       slots: {
-        base: 'cursor-pointer',
+        base: 'min-h-12 cursor-pointer',
       },
       defaultVariants: {
-        size: 'lg',
+        size: 'xl',
       },
     },
     input: {
+      slots: {
+        base: 'min-h-12',
+      },
       defaultVariants: {
-        size: 'lg',
+        size: 'xl',
       },
     },
     toaster: {

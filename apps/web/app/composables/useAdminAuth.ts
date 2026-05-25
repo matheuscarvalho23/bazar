@@ -5,7 +5,8 @@ import type { IRegisterAdminRequest } from '~/interfaces/auth/register-admin-req
 import type { IUseAdminAuthReturn } from '~/interfaces/auth/use-admin-auth-return.interface'
 import { getApiErrorMessage } from '~/utils/getApiErrorMessage'
 
-const ADMIN_AUTH_ERROR_MESSAGE = 'Unable to complete admin authentication.'
+const ADMIN_AUTH_ERROR_MESSAGE = 'Não foi possível completar a autenticação do administrador.'
+const ADMIN_LOGIN_ERROR_MESSAGE = 'Email ou senha inválidos.'
 
 /**
  * Orchestrate admin auth state and actions for auth forms.
@@ -56,9 +57,9 @@ export function useAdminAuth(): IUseAdminAuthReturn {
    *
    * @returns void
    */
-  function setFailure(requestError: unknown): void {
+  function setFailure(requestError: unknown, fallbackMessage = ADMIN_AUTH_ERROR_MESSAGE): void {
     isSuccess.value = false
-    error.value = getApiErrorMessage(requestError, ADMIN_AUTH_ERROR_MESSAGE)
+    error.value = getApiErrorMessage(requestError, fallbackMessage)
   }
 
   /**
@@ -66,9 +67,9 @@ export function useAdminAuth(): IUseAdminAuthReturn {
    *
    * @param data - Admin registration payload : IRegisterAdminRequest
    *
-   * @returns Created admin response : Promise<IAdminResponse>
+   * @returns Created admin response or null : Promise<IAdminResponse | null>
    */
-  async function registerAdmin(data: IRegisterAdminRequest): Promise<IAdminResponse> {
+  async function registerAdmin(data: IRegisterAdminRequest): Promise<IAdminResponse | null> {
     setPending()
 
     try {
@@ -78,7 +79,7 @@ export function useAdminAuth(): IUseAdminAuthReturn {
       return createdAdmin
     } catch (requestError) {
       setFailure(requestError)
-      throw requestError
+      return null
     } finally {
       isLoading.value = false
     }
@@ -89,9 +90,9 @@ export function useAdminAuth(): IUseAdminAuthReturn {
    *
    * @param data - Admin login payload : ILoginAdminRequest
    *
-   * @returns Admin login response : Promise<ILoginAdminResponse>
+   * @returns Admin login response or null : Promise<ILoginAdminResponse | null>
    */
-  async function loginAdmin(data: ILoginAdminRequest): Promise<ILoginAdminResponse> {
+  async function loginAdmin(data: ILoginAdminRequest): Promise<ILoginAdminResponse | null> {
     setPending()
 
     try {
@@ -100,8 +101,8 @@ export function useAdminAuth(): IUseAdminAuthReturn {
 
       return response
     } catch (requestError) {
-      setFailure(requestError)
-      throw requestError
+      setFailure(requestError, ADMIN_LOGIN_ERROR_MESSAGE)
+      return null
     } finally {
       isLoading.value = false
     }
@@ -122,7 +123,7 @@ export function useAdminAuth(): IUseAdminAuthReturn {
       return currentAdmin
     } catch (requestError) {
       setFailure(requestError)
-      throw requestError
+      return null
     } finally {
       isLoading.value = false
     }

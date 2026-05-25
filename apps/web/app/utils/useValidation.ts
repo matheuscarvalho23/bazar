@@ -1,4 +1,5 @@
 import { z, type ZodError, type ZodString, type ZodType } from 'zod'
+import type { ILoginAdminRequest } from '~/interfaces/auth/login-admin-request.interface'
 import type { IRegisterAdminRequest } from '~/interfaces/auth/register-admin-request.interface'
 import type { IUseValidationReturn } from '~/interfaces/validation/use-validation-return.interface'
 
@@ -39,6 +40,11 @@ export default function useValidation(): IUseValidationReturn {
       .transform((value) => (value === '' ? undefined : value)),
   })
 
+  const loginSchema: ZodType<ILoginAdminRequest> = z.object({
+    email: validEmail(),
+    password: requiredString('Informe a senha do administrador.'),
+  })
+
   /**
    * Return the first safe user-facing Zod validation message.
    *
@@ -54,6 +60,7 @@ export default function useValidation(): IUseValidationReturn {
     requiredString,
     validEmail,
     registerSchema,
+    loginSchema,
     getZodValidationErrorMessage,
   }
 }

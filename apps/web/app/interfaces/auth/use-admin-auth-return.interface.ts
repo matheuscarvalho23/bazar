@@ -10,8 +10,8 @@ export interface IUseAdminAuthReturn {
   isLoading: Readonly<Ref<boolean>>
   isSuccess: Readonly<Ref<boolean>>
   error: Readonly<Ref<string | null>>
-  registerAdmin(data: IRegisterAdminRequest): Promise<IAdminResponse>
-  loginAdmin(data: ILoginAdminRequest): Promise<ILoginAdminResponse>
+  registerAdmin(data: IRegisterAdminRequest): Promise<IAdminResponse | null>
+  loginAdmin(data: ILoginAdminRequest): Promise<ILoginAdminResponse | null>
   fetchCurrentAdmin(): Promise<IAdminResponse | null>
   logoutAdmin(): void
   resetStatus(): void
