@@ -128,6 +128,11 @@ Before changing anything, the agent must:
 - Work inside `apps/web`.
 - Follow the typing and interface rules in `docs/agents/TYPES.md`.
 - Use Nuxt 4.
+- Build frontend screens mobile-first because both the owner/admin and
+  customers are expected to use the system primarily on phones.
+- Make frontend flows feel like an app, not a marketing website: use
+  task-focused screens, app-style navigation, touch-friendly controls, and
+  clear loading/empty/error states.
 - Keep the public experience simple and direct.
 - Prioritize catalog, product detail, and WhatsApp interest flow.
 - Do not implement customer login in the MVP.

@@ -169,11 +169,15 @@ already uses another contract.
 ## UI Rules
 
 - Nuxt UI is mandatory for the screens in this phase.
+- Admin auth screens must be mobile-first and must feel like app entry screens,
+  because the owner/admin is expected to use the system on a phone.
 - Do not add another UI component library.
 - Do not hand-roll base buttons, inputs, form controls, cards, alerts,
   modals, or navigation when Nuxt UI provides the component.
 - Custom components may exist only to compose auth-specific behavior and
   layout.
+- Use touch-friendly form controls, clear submit actions, readable mobile
+  spacing, and safe user-facing loading/error/success states.
 - Keep the admin auth UI separated from the public catalog UI.
 - Do not add i18n in this phase.
 

@@ -3,6 +3,7 @@ import type { ILoginAdminRequest } from '~/interfaces/auth/login-admin-request.i
 import type { ILoginAdminResponse } from '~/interfaces/auth/login-admin-response.interface'
 import type { IRegisterAdminRequest } from '~/interfaces/auth/register-admin-request.interface'
 import type { IUseAdminAuthReturn } from '~/interfaces/auth/use-admin-auth-return.interface'
+import { getApiErrorMessage } from '~/utils/getApiErrorMessage'
 
 const ADMIN_AUTH_ERROR_MESSAGE = 'Unable to complete admin authentication.'
 
@@ -51,11 +52,13 @@ export function useAdminAuth(): IUseAdminAuthReturn {
   /**
    * Mark an auth request as failed.
    *
+   * @param requestError - Failed auth request error : unknown
+   *
    * @returns void
    */
-  function setFailure(): void {
+  function setFailure(requestError: unknown): void {
     isSuccess.value = false
-    error.value = ADMIN_AUTH_ERROR_MESSAGE
+    error.value = getApiErrorMessage(requestError, ADMIN_AUTH_ERROR_MESSAGE)
   }
 
   /**
@@ -74,7 +77,7 @@ export function useAdminAuth(): IUseAdminAuthReturn {
 
       return createdAdmin
     } catch (requestError) {
-      setFailure()
+      setFailure(requestError)
       throw requestError
     } finally {
       isLoading.value = false
@@ -97,7 +100,7 @@ export function useAdminAuth(): IUseAdminAuthReturn {
 
       return response
     } catch (requestError) {
-      setFailure()
+      setFailure(requestError)
       throw requestError
     } finally {
       isLoading.value = false
@@ -118,7 +121,7 @@ export function useAdminAuth(): IUseAdminAuthReturn {
 
       return currentAdmin
     } catch (requestError) {
-      setFailure()
+      setFailure(requestError)
       throw requestError
     } finally {
       isLoading.value = false

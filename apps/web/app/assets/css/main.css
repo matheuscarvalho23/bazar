@@ -1,2 +1,62 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+@theme static {
+  --color-bazar-50: #fff3db;
+  --color-bazar-100: #f6e8d3;
+  --color-bazar-200: #e7d6c0;
+  --color-bazar-300: #d3c8b4;
+  --color-bazar-400: #cf8c80;
+  --color-bazar-500: #c84648;
+  --color-bazar-600: #b33f42;
+  --color-bazar-700: #963a3c;
+  --color-bazar-800: #7f3c3a;
+  --color-bazar-900: #703e3b;
+  --color-bazar-950: #3f2424;
+
+  --color-linen-50: #fffdf8;
+  --color-linen-100: #fff3db;
+  --color-linen-200: #e7e4d5;
+  --color-linen-300: #d3c8b4;
+  --color-linen-400: #bcae97;
+  --color-linen-500: #a39179;
+  --color-linen-600: #87725d;
+  --color-linen-700: #6f5b4b;
+  --color-linen-800: #58483e;
+  --color-linen-900: #453833;
+  --color-linen-950: #2a211f;
+
+  --color-clay-50: #fff3db;
+  --color-clay-100: #f7dfcf;
+  --color-clay-200: #eabcae;
+  --color-clay-300: #dc9489;
+  --color-clay-400: #d16e68;
+  --color-clay-500: #c84648;
+  --color-clay-600: #aa3d40;
+  --color-clay-700: #8d3839;
+  --color-clay-800: #703e3b;
+  --color-clay-900: #58312f;
+  --color-clay-950: #321b1b;
+}
+
+:root,
+.light,
+.dark {
+  color-scheme: light;
+  --ui-primary: var(--color-bazar-500);
+  --ui-text-dimmed: var(--ui-color-neutral-500);
+  --ui-text-muted: var(--ui-color-neutral-600);
+  --ui-text-toned: var(--ui-color-neutral-700);
+  --ui-text: var(--ui-color-neutral-800);
+  --ui-text-highlighted: var(--ui-color-neutral-950);
+  --ui-text-inverted: #ffffff;
+  --ui-bg: var(--ui-color-neutral-50);
+  --ui-bg-muted: var(--ui-color-neutral-100);
+  --ui-bg-elevated: #ffffff;
+  --ui-bg-accented: var(--ui-color-neutral-200);
+  --ui-bg-inverted: var(--ui-color-neutral-950);
+  --ui-border: var(--ui-color-neutral-200);
+  --ui-border-muted: var(--ui-color-neutral-200);
+  --ui-border-accented: var(--ui-color-neutral-300);
+  --ui-border-inverted: var(--ui-color-neutral-950);
+}

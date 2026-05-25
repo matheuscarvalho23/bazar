@@ -63,6 +63,7 @@ export default tseslint.config(
     files: ['app/**/*.{ts,vue}'],
     ignores: ['app/**/interfaces/**/*.{ts,vue}', 'app/**/types/**/*.{ts,vue}'],
     rules: {
+      'no-undef': 'off',
       'no-restricted-syntax': [
         'error',
         {

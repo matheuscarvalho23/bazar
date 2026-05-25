@@ -70,6 +70,13 @@ Before writing frontend code:
 - Use Nuxt UI for frontend screens and interactive UI. This rule is mandatory.
 - Prefer shared contracts from `packages/shared` or the existing project type location.
 - Keep frontend code independent from backend implementation details beyond API contracts.
+- Build mobile-first by default. Admin users and customers are expected to use
+  the app primarily on phones, so every screen must be designed for small
+  touch screens first and then enhanced for larger viewports.
+- The frontend must feel like an application, not a marketing website or a
+  document page. Prioritize focused workflows, persistent navigation where
+  useful, clear action placement, app-like loading/empty/error states, and
+  touch-friendly controls.
 
 ## Nuxt UI Rules
 
@@ -90,6 +97,55 @@ Rules:
 - Do not introduce another UI library unless a later architecture decision
   explicitly replaces Nuxt UI.
 - Do not add i18n unless a task explicitly requires it.
+
+## Mobile-First App Experience Rules
+
+The frontend must be planned and implemented as a mobile-first web app.
+
+Rules:
+
+- Start layouts from the smallest supported viewport. Desktop and tablet
+  layouts should enhance the mobile flow, not define it.
+- Use touch-friendly sizing for primary actions, form controls, list rows,
+  cards, tabs, menus, and bottom actions. Avoid dense desktop-only controls on
+  primary mobile flows.
+- Prefer app-like navigation patterns over website-like navigation for repeated
+  workflows:
+  - Public/customer flows may use a simple top bar, search/filter controls, and
+    bottom or sticky actions when they improve product browsing or WhatsApp
+    interest flows.
+  - Admin flows should use admin-specific navigation, such as an app header,
+    bottom navigation, tab navigation, drawer, or contextual action menu when
+    the task introduces more than one admin destination.
+  - Do not mix public catalog navigation and admin navigation in the same
+    layout.
+- Keep primary actions reachable on mobile. Use sticky footer actions or
+  compact action bars when a workflow naturally ends with submit, save,
+  continue, reserve, or WhatsApp actions.
+- Avoid large desktop-style sidebars as the only navigation path on mobile.
+  If a sidebar is needed for larger screens, provide a mobile drawer, bottom
+  navigation, or menu button.
+- Render lists and management views for scanning on phones first. Prefer
+  stacked list items, compact metadata, clear status indicators, and accessible
+  row actions over wide tables unless the task explicitly targets desktop data
+  comparison.
+- Use responsive constraints for fixed UI pieces such as forms, product cards,
+  image areas, toolbars, action bars, tabs, and menus so loading text,
+  validation messages, and dynamic labels do not shift or overflow.
+- Preserve mobile browser ergonomics: respect safe-area insets when using
+  sticky bottom UI, avoid tiny tap targets, avoid horizontal scrolling, and keep
+  keyboard-driven form states readable.
+- Pages should render meaningful loading, empty, success, and error states
+  with Nuxt UI feedback components instead of leaving blank areas or raw text.
+- Auth screens should feel like app entry screens: centered or top-aligned
+  mobile form, clear title, concise context, visible submit action, and direct
+  route action to the paired auth flow.
+- Public catalog screens should prioritize product inspection on phones:
+  readable images, quick status visibility, simple filters, and clear WhatsApp
+  interest or reserve actions.
+- Admin screens should prioritize repeated operation on phones: quick access
+  menus, clear status badges, predictable save/cancel actions, and minimal
+  scrolling friction.
 
 ## Nuxt Auto-Import Rules
 
@@ -813,16 +869,44 @@ Form rules:
 
 - Keep raw form state close to the form owner.
 - Use explicit DTO types for submission payloads.
-- Validate before calling services.
-- Keep validation logic reusable when more than one form needs it.
+- Validate with Zod before calling services.
+- Centralize reusable validation schemas and helper builders in
+  `app/utils/useValidation.ts`, instead of writing validation logic inside
+  pages, components, composables, stores, or services.
+- Export `useValidation.ts` as the default utility and expose schemas through
+  its returned object, so callers use a stable access pattern like
+  `useValidation().registerSchema` or future schemas such as
+  `useValidation().customerSchema`.
+- The validation utility may also expose reusable Zod helper builders, such as
+  `requiredString()` and `validEmail()`, but must not depend on i18n or UI
+  state.
+- Reuse the centralized schema anywhere the same form or payload must be
+  validated.
 - Do not pass unvalidated external input directly to services.
 - Keep API errors separate from client validation errors.
+- Keep user-facing validation messages safe and non-technical.
+- Do not duplicate frontend validation rules across multiple pages or
+  components.
+
+Validation utility rules:
+
+- `app/utils/useValidation.ts` may import Zod and app-local interfaces or
+  types.
+- Return schemas with clear feature names, such as `registerSchema`, from the
+  default `useValidation()` utility.
+- Return helper functions only when they are reusable across multiple callers.
+- Keep `app/utils/useValidation.ts` free of Vue reactive APIs, UI state,
+  runtime config, API calls, and side effects.
+- Do not declare interfaces or type aliases in `app/utils/useValidation.ts`;
+  use
+  `app/interfaces` and `app/types` as required by `docs/agents/TYPES.md`.
+- Type the utility return through an interface in `app/interfaces`.
 
 Recommended flow:
 
 ```txt
 Component emits form submit
-Page/composable validates input
+Page/composable validates input with useValidation().{schemaName}
 Composable calls service
 Service calls Node API through Axios
 Composable updates state
