@@ -545,6 +545,8 @@ Rules:
 - Prefer imported/shared types over local duplicate types.
 - Use `unknown` plus type narrowing for external data.
 - Do not use inline object contracts for props, emits, composable returns, store returns, or service payloads.
+- Prefer `!value` guards for nullable references when null and undefined are both invalid.
+- For optional booleans, use explicit undefined checks instead of truthy guards so `false` remains assignable.
 
 ## Page Structure
 
@@ -1039,6 +1041,7 @@ Before finishing frontend work, verify:
 - Interfaces live in `app/interfaces` and use the `I` prefix.
 - Type aliases live in `app/types`.
 - Interfaces and type aliases are exported and imported with `import type`.
+- Nullish checks follow the project style: negation guards for nullable references, explicit undefined checks for optional booleans.
 - Props and emits are typed.
 - Custom emit names start with `on`.
 - Nuxt auto-imported APIs are not manually imported.

@@ -612,6 +612,8 @@ Rules:
 - Use `readonly` for injected dependencies when possible.
 - Use discriminated unions for internal result types when a flow has multiple outcomes.
 - Do not use inline object contracts for service returns, repository options, controller responses, or mapper results.
+- Prefer `!value` guards for nullable references when null and undefined are both invalid.
+- For optional booleans, use explicit undefined checks instead of truthy guards so `false` remains assignable.
 
 ## Function And Method Rules
 
@@ -1089,6 +1091,7 @@ Before finishing backend work, verify:
 - Interfaces live in `interfaces` folders and use the `I` prefix.
 - Type aliases live in `types` folders.
 - Interfaces and type aliases are exported and imported with `import type`.
+- Nullish checks follow the project style: negation guards for nullable references, explicit undefined checks for optional booleans.
 - No non-null assertion was introduced without a guard.
 - All functions and methods have explicit return types.
 - Configuration is not hardcoded.

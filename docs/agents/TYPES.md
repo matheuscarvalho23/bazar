@@ -424,6 +424,20 @@ Also avoid:
 - Using `Record<string, unknown>` when the shape is known and should be named.
 - Using DTO classes as frontend response contracts.
 
+## Null And Undefined Checks
+
+Use a consistent guard style for nullish checks in implementation files.
+
+Rules:
+
+- Prefer negation guards for nullable references:
+  - `if (!category) { ... }` instead of `if (category === null) { ... }` when `null` and `undefined` are both invalid states.
+- For optional string, array, and object inputs, prefer truthy guards when empty values should be ignored:
+  - `if (dto.slug) { ... }` instead of `if (dto.slug !== undefined) { ... }` when empty strings should not be accepted.
+- For optional booleans, never use truthy guards because `false` is a valid value:
+  - Use explicit undefined checks, for example `if (dto.active === undefined) { ... } else { ... }`.
+- Use explicit equality checks only when the implementation must distinguish `null` from `undefined`.
+
 ## Agent Checklist
 
 Before finishing TypeScript work, verify:

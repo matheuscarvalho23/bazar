@@ -7,6 +7,7 @@ import { validateEnvironment } from './config/environment.validation'
 import { createNestTypeOrmOptions } from './database/typeorm-options.factory'
 import { AdminsModule } from './modules/admins/admins.module'
 import { AuthModule } from './modules/auth/auth.module'
+import { CategoriesModule } from './modules/categories/categories.module'
 import type { IDatabaseConfig } from './config/interfaces/database-config.interface'
 
 @Module({
@@ -26,6 +27,7 @@ import type { IDatabaseConfig } from './config/interfaces/database-config.interf
     }),
     AdminsModule,
     AuthModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}
