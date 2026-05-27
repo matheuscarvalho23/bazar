@@ -27,6 +27,6 @@ import type { JwtModuleOptions } from '@nestjs/jwt'
   ],
   controllers: [AuthController],
   providers: [AuthService, AdminJwtGuard],
-  exports: [AdminJwtGuard],
+  exports: [AdminJwtGuard, JwtModule],
 })
 export class AuthModule {}

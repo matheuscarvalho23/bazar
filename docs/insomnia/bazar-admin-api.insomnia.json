@@ -1,0 +1,146 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-05-27T00:00:00.000Z",
+  "__export_source": "codex.generate",
+  "resources": [
+    {
+      "_id": "wrk_bazar_admin_api",
+      "_type": "workspace",
+      "name": "BAZAR - Admin API",
+      "description": "Collection para autenticação admin e gestão de categorias (TASK 5.1).",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_bazar_admin_api",
+      "_type": "environment",
+      "parentId": "wrk_bazar_admin_api",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3001",
+        "access_token": "",
+        "category_id": ""
+      }
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_bazar_admin_api",
+      "name": "AUTH"
+    },
+    {
+      "_id": "req_auth_register",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "REGISTER",
+      "method": "POST",
+      "url": "{{ _.base_url }}/admin/auth/register",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Admin\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"12345678\",\n  \"phone\": \"11999999999\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_auth_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "LOGIN",
+      "method": "POST",
+      "url": "{{ _.base_url }}/admin/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"12345678\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_auth_me",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "ME",
+      "method": "GET",
+      "url": "{{ _.base_url }}/admin/auth/me",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ]
+    },
+    {
+      "_id": "fld_categories",
+      "_type": "request_group",
+      "parentId": "wrk_bazar_admin_api",
+      "name": "CATEGORIES"
+    },
+    {
+      "_id": "req_categories_list",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "LIST",
+      "method": "GET",
+      "url": "{{ _.base_url }}/admin/categories",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_categories_create",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "CREATE",
+      "method": "POST",
+      "url": "{{ _.base_url }}/admin/categories",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Roupas Femininas\",\n  \"slug\": \"roupas-femininas\",\n  \"active\": true\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ]
+    },
+    {
+      "_id": "req_categories_update",
+      "_type": "request",
+      "parentId": "fld_categories",
+      "name": "UPDATE",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/admin/categories/{{ _.category_id }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Moda Feminina\",\n  \"slug\": \"moda-feminina\",\n  \"active\": false\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ]
+    }
+  ]
+}

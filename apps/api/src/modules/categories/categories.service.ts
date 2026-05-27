@@ -67,6 +67,8 @@ export class CategoriesService {
   async updateCategory(id: string, dto: UpdateCategoryDto): Promise<ICategoryResponse> {
     const category = await this.categoriesRepository.findById(id)
 
+    console.log(category)
+
     if (!category) {
       throw new NotFoundException('Category not found')
     }
@@ -81,9 +83,7 @@ export class CategoriesService {
       category.slug = normalizedSlug
     }
 
-    if (!dto.active) {
-      category.active = dto.active || false
-    }
+    category.active = dto.active || false
 
     const savedCategory = await this.categoriesRepository.save(category)
 
