@@ -470,7 +470,6 @@ Business validation:
 - Validate inventory availability in services.
 - Validate duplicate external codes before or during imports.
 - Validate import row data before writing product records.
-- Validate promotional price rules before saving products.
 
 Do not rely only on frontend validation.
 

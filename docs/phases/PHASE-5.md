@@ -74,7 +74,6 @@ Acceptance criteria:
   - gender
   - condition
   - price
-  - promotional price
   - status
   - image URLs with ordering and main image flag
 - Product responses include enough category, image, and inventory summary data
@@ -82,7 +81,6 @@ Acceptance criteria:
 - Product create with images and initial quantity is transactional.
 - When initial quantity is greater than zero, inventory and stock movement
   records are created according to `docs/agents/DATABASE.md`.
-- Promotional price cannot be greater than regular price.
 - Product responses do not expose TypeORM entities directly.
 - Product image ordering is deterministic.
 - Service tests cover create, update, list filters, status update, image
@@ -244,4 +242,3 @@ When using Codex planning mode with this phase:
 - Keep implementation aligned with `docs/agents/API.md`,
   `docs/agents/DATABASE.md`, `docs/agents/FRONTEND.md`, and
   `docs/agents/TYPES.md`.
-

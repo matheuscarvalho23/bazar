@@ -1,5 +1,4 @@
 import {
-  Check,
   Column,
   CreateDateColumn,
   Entity,
@@ -22,10 +21,6 @@ import { ProductStatus } from '../enums/product-status.enum'
 import { ProductImageEntity } from './product-image.entity'
 
 @Entity({ name: 'products' })
-@Check(
-  'CHK_products_promotional_price_lte_price',
-  'promotional_price IS NULL OR promotional_price <= price',
-)
 @Index('IDX_products_status', ['status'])
 @Index('IDX_products_category_id', ['categoryId'])
 @Index('IDX_products_created_by_admin_id', ['createdByAdminId'])
@@ -69,9 +64,6 @@ export class ProductEntity {
 
   @Column({ name: 'price', type: 'numeric', precision: 12, scale: 2 })
   declare price: string
-
-  @Column({ name: 'promotional_price', type: 'numeric', precision: 12, scale: 2, nullable: true })
-  declare promotionalPrice: string | null
 
   @Column({
     name: 'status',

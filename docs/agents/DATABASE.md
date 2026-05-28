@@ -53,8 +53,6 @@ TypeORM entity property names should be camelCase, but database column names mus
 Example:
 
 ```ts
-@Column({ name: 'promotional_price', type: 'numeric', precision: 12, scale: 2, nullable: true })
-promotionalPrice: string | null
 ```
 
 Use `string` for `numeric` values in TypeORM entities unless the project introduces a deliberate decimal handling strategy.
@@ -199,7 +197,6 @@ Stores sellable items in the thrift store catalog.
 | `gender` | varchar | no | Optional gender/category attribute |
 | `condition` | `product_condition` | no | Physical condition |
 | `price` | numeric(12, 2) | yes | Regular price |
-| `promotional_price` | numeric(12, 2) | no | Optional sale price |
 | `status` | `product_status` | yes | Defaults to `active` |
 | `external_code` | varchar | no | Source-system product code |
 | `import_source` | varchar | no | Source name for imported products |
@@ -213,7 +210,6 @@ Rules:
 - Do not automatically mark a product as reserved because a customer clicked the WhatsApp interest button.
 - Preserve `external_code` and `import_source` for imported products when available.
 - If duplicate prevention is implemented, prefer a unique index scoped by `import_source` and `external_code` where both are present.
-- `promotional_price` must not be greater than `price` when both are present.
 
 ## `product_images`
 

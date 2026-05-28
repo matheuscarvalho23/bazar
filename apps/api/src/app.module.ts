@@ -8,6 +8,7 @@ import { createNestTypeOrmOptions } from './database/typeorm-options.factory'
 import { AdminsModule } from './modules/admins/admins.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { CategoriesModule } from './modules/categories/categories.module'
+import { ProductsModule } from './modules/products/products.module'
 import type { IDatabaseConfig } from './config/interfaces/database-config.interface'
 
 @Module({
@@ -28,6 +29,7 @@ import type { IDatabaseConfig } from './config/interfaces/database-config.interf
     AdminsModule,
     AuthModule,
     CategoriesModule,
+    ProductsModule,
   ],
 })
 export class AppModule {}
