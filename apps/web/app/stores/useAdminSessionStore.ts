@@ -3,12 +3,18 @@ import type { IAdminSessionStoreReturn } from '~/interfaces/auth/admin-session-s
 import type { ILoginAdminRequest } from '~/interfaces/auth/login-admin-request.interface'
 import type { ILoginAdminResponse } from '~/interfaces/auth/login-admin-response.interface'
 import type { IRegisterAdminRequest } from '~/interfaces/auth/register-admin-request.interface'
+import axios from 'axios'
 import { adminAuthService } from '~/services/admin-auth.service'
 
 export const useAdminSessionStore = defineStore('admin-session', (): IAdminSessionStoreReturn => {
+  const accessTokenCookie = useCookie<string | null>('admin_access_token', {
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7,
+  })
   const admin = ref<IAdminResponse | null>(null)
-  const accessToken = ref<string | null>(null)
-  const isAuthenticated = computed(() => accessToken.value !== null && admin.value !== null)
+  const accessToken = ref<string | null>(accessTokenCookie.value ?? null)
+  const isAuthenticated = computed(() => accessToken.value !== null)
 
   /**
    * Register the first admin account.
@@ -51,9 +57,27 @@ export const useAdminSessionStore = defineStore('admin-session', (): IAdminSessi
 
       return currentAdmin
     } catch (error) {
-      clearSession()
+      if (shouldClearSessionAfterFetchError(error)) {
+        clearSession()
+      }
+
       throw error
     }
+  }
+
+  /**
+   * Check whether a failed profile request means the token is no longer valid.
+   *
+   * @param error - Failed request error : unknown
+   *
+   * @returns Whether the in-memory and persisted session must be cleared : boolean
+   */
+  function shouldClearSessionAfterFetchError(error: unknown): boolean {
+    if (!axios.isAxiosError(error)) {
+      return false
+    }
+
+    return error.response?.status === 401 || error.response?.status === 403
   }
 
   /**
@@ -65,6 +89,7 @@ export const useAdminSessionStore = defineStore('admin-session', (): IAdminSessi
    */
   function setSession(response: ILoginAdminResponse): void {
     accessToken.value = response.accessToken
+    accessTokenCookie.value = response.accessToken
     admin.value = response.admin
   }
 
@@ -86,6 +111,7 @@ export const useAdminSessionStore = defineStore('admin-session', (): IAdminSessi
    */
   function clearSession(): void {
     accessToken.value = null
+    accessTokenCookie.value = null
     admin.value = null
   }
 

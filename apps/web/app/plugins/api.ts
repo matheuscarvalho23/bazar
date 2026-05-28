@@ -1,7 +1,7 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios'
 
 /**
- * Attach the in-memory admin access token to protected API requests.
+ * Attach the persisted admin access token to protected API requests.
  *
  * @param config - Axios request configuration : InternalAxiosRequestConfig
  *
@@ -9,10 +9,8 @@ import axios, { type InternalAxiosRequestConfig } from 'axios'
  */
 function attachAdminAuthorizationHeader(
   config: InternalAxiosRequestConfig,
+  accessToken: string | null,
 ): InternalAxiosRequestConfig {
-  const adminSessionStore = useAdminSessionStore()
-  const accessToken = adminSessionStore.getAccessToken()
-
   if (accessToken !== null) {
     config.headers.Authorization = `Bearer ${accessToken}`
   }
@@ -22,6 +20,7 @@ function attachAdminAuthorizationHeader(
 
 export default defineNuxtPlugin(function setupApiClient() {
   const config = useRuntimeConfig()
+  const accessTokenCookie = useCookie<string | null>('admin_access_token')
 
   const api = axios.create({
     baseURL: config.public.apiBaseUrl,
@@ -31,7 +30,9 @@ export default defineNuxtPlugin(function setupApiClient() {
     },
   })
 
-  api.interceptors.request.use(attachAdminAuthorizationHeader)
+  api.interceptors.request.use((requestConfig) =>
+    attachAdminAuthorizationHeader(requestConfig, accessTokenCookie.value),
+  )
 
   return {
     provide: {

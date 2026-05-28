@@ -10,8 +10,7 @@ useHead({
   title: 'Admin dashboard',
 })
 
-const { admin, isLoading } = useAdminAuth()
-const adminName = computed(() => admin.value?.name ?? 'Admin')
+const { isLoading } = useAdminAuth()
 
 const dashboardAreas: IAdminNavigationItem[] = [
   {
@@ -52,9 +51,6 @@ const dashboardAreas: IAdminNavigationItem[] = [
     <template v-else>
       <div class="space-y-2">
         <p class="text-sm font-medium text-primary">Dashboard</p>
-        <h1 class="break-words text-2xl font-bold tracking-normal text-highlighted sm:text-3xl">
-          Ola, {{ adminName }}
-        </h1>
         <p class="max-w-2xl text-sm leading-6 text-muted">
           Este e o ponto inicial protegido da administracao do bazar.
         </p>
